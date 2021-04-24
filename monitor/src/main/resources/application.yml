@@ -1,0 +1,23 @@
+# 应用名称
+#spring.application.name=demo
+
+
+server:
+  port: 8651
+
+spring:
+  application:
+    name: monitor-admin
+  boot:
+    admin:
+      ui:
+        title: ${spring.application.name}
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  security:
+    user:
+      name: zqj
+      password: 123456
+

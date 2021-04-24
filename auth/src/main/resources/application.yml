@@ -1,0 +1,84 @@
+server:
+  port: 8650
+
+# 应用名称
+spring:
+  application:
+    name: auth
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+    timeout: 5000
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        group: DEFAULT_GROUP
+        prefix: auth
+        file-extension: yaml
+  datasource:
+    dynamic:
+      hikari:
+        connection-timeout: 30000
+        max-lifetime: 1800000
+        max-pool-size: 15
+        min-idle: 5
+        connection-test-query: select 1
+        pool-name: HikariCP
+      primary: base
+      datasource:
+        base:
+          username: root
+          password: password
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/zcloud_base?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+  boot:
+    admin:
+      client:
+        url: http://localhost:8651
+        username: zqj
+        password: 123456
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: "@project.description@"
+    version: "@project.version@"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+
+mybatis-plus:
+  # 指定别名扫描路径(这个路径后续在common-core模块里定义，该路径下的实体类将自动配置别名，默认为类名首字母小写。配置别名后，便可以直接在MyBatis XML文件里使用了)
+  type-aliases-package: com.zqj.common.entity.*
+  # 指定MyBatis XML文件路径
+  mapper-locations: classpath:mapper/*.xml
+  # 指定为null，否则插入空值时会报“无效的列类型”错误
+  configuration:
+    jdbc-type-for-null: null
+  # 关闭banner
+  global-config:
+    banner: false
+
+mybatis:
+  mapper-locations: classpath:mappings/*.xml
+
+logging:
+  level:
+    com.zqj.auth: debug

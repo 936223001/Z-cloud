@@ -1,0 +1,54 @@
+server:
+  port: 8601
+
+# 应用名称
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        - id: auth
+          uri: lb://auth
+          predicates:
+            - Path=/auth/**
+        - id: consumer
+          uri: lb://consumer
+          predicates:
+            - Path=/consumer/**
+      default-filters:
+        - StripPrefix=1
+  boot:
+    admin:
+      client:
+        url: http://localhost:8651
+        username: zqj
+        password: 123456
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: "@project.description@"
+    version: "@project.version@"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+# 打印详细转发日志，生产环境屏蔽
+gateway:
+  log:
+    enable: true
+
+# gateway debug 日志
+logging:
+  level:
+    org.springframework.cloud.gateway: debug

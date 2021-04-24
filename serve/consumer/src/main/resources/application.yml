@@ -1,0 +1,45 @@
+server:
+  port: 8662
+
+spring:
+  application:
+    name: consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  boot:
+    admin:
+      client:
+        url: http://localhost:8651
+        username: zqj
+        password: 123456
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: "@project.description@"
+    version: "@project.version@"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+security:
+  oauth2:
+    resource:
+      id: ${spring.application.name}
+      user-info-uri: http://127.0.0.1:8601/auth/user
+
+# 是Feign的回退生效
+feign:
+  hystrix:
+    enabled: true
+
+hystrix:
+  shareSecurityContext: true
