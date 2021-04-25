@@ -20,6 +20,7 @@ info:
     name: ${spring.application.name}
     description: "@project.description@"
     version: "@project.version@"
+
 management:
   endpoints:
     web:
@@ -28,7 +29,6 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
-
 
 security:
   oauth2:
